@@ -7,3 +7,5 @@ routes - here we write post get like
 postman link - http://localhost:3000/api/user/register
 
 day2 : error handling of login page
+
+postman for login - http://localhost:3000/api/user/login
