@@ -1,0 +1,7 @@
+config - creaet db connection or fuctinality that reuse again and again
+controller - we connect our model 
+middle - error middleware or diiff type
+model-  here we can write our shemas
+routes - here we write post get like
+
+postman link - http://localhost:3000/api/user/register
