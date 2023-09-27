@@ -9,3 +9,5 @@ postman link - http://localhost:3000/api/user/register
 day2 : error handling of login page
 
 postman for login - http://localhost:3000/api/user/login
+
+day 3 fetch the user
