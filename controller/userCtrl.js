@@ -2,6 +2,7 @@ const { model } = require('mongoose');
 const User = require('../models/userModel');
 const asyncHnadler = require('express-async-handler');
 const { generateToken } = require('../config/jwtToken');
+const validateMongoDbId = require('../utils/validateMongodbid');
 
 const createUser = asyncHnadler(async(req,res)=>{
     const email = req.body.email;
@@ -43,17 +44,23 @@ const loginUserCtrl = asyncHnadler(async(req,res)=>{
 });
 
 //update a user
+
 const updatedUser = asyncHnadler(async(req,res)=>{
-    const {id} = req.params;
+    console.log();
+    const { _id } =req.user;
+    validateMongoDbId(_id);
     try{
-        const updatedUser = await User.findByIdAndUpdate(id, {
+        const updatedUser = await User.findByIdAndUpdate(
+            _id, 
+            {
             firstname: req?.body?.firstname,
             lastname: req?.body?.lastname,
             email: req?.body?.email,
             mobile: req?.body?.mobile,
         },{
             new : true
-        });
+        }
+        );
         res.json(updatedUser);
 
     }catch(error){
@@ -61,7 +68,8 @@ const updatedUser = asyncHnadler(async(req,res)=>{
     }
 });
 
-//how to fetch or get all the user
+//get all the user
+
 const getallUser = asyncHnadler(async(req,res)=>{
     try{
         const getUsers = await User.find();
@@ -73,9 +81,9 @@ const getallUser = asyncHnadler(async(req,res)=>{
 
 //get a single user
 const getaUser = asyncHnadler(async(req,res)=>{
-    // console.log(req.params);
+    console.log();
     const {id} = req.params;
-    // console.log(id);
+    validateMongoDbId(id);
     try{
         const getaUser = await User.findById(id);
         res.json({
@@ -86,10 +94,12 @@ const getaUser = asyncHnadler(async(req,res)=>{
     }
 });
 
+
 //delete a single user
 const deleteaUser = asyncHnadler(async(req,res)=>{
-    // console.log(req.params);
+    console.log();
     const {id} = req.params;
+    validateMongoDbId(_id);
     try{
         const deleteaUser = await User.findByIdAndDelete(id);
         res.json({
@@ -100,4 +110,54 @@ const deleteaUser = asyncHnadler(async(req,res)=>{
     }
 });
 
-module.exports = {createUser, loginUserCtrl, getallUser, getaUser, deleteaUser, updatedUser};
+// block a user
+const blockUser = asyncHnadler( async (req, res) => {
+    const { id } = req.params;
+    validateMongoDbId(id);
+    try{
+        const blockusr = await User.findByIdAndUpdate(
+            id,
+            {
+            isBlocked:true,
+        },
+        {
+            new:true,
+        }
+        );
+        res.json(blockusr);
+    }catch(error){
+        throw new Error(error);
+    }
+});
+
+// unblock a user
+const unblockUser = asyncHnadler( async (req, res) => {
+    const { id } = req.params;
+    validateMongoDbId(id);
+    try{
+        const unblock = await User.findByIdAndUpdate(
+            id,
+            {
+            isBlocked:false,
+        },
+        {
+            new:true,
+        }
+        );
+        res.json({
+            message:"User UnBloacked",
+        });
+    }catch(error){
+        throw new Error(error);
+    }
+});
+
+module.exports = {
+    createUser, 
+    loginUserCtrl, 
+    getallUser, 
+    getaUser, 
+    deleteaUser, 
+    updatedUser, 
+    blockUser, 
+    unblockUser};

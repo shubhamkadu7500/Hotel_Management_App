@@ -10,4 +10,6 @@ day2 : error handling of login page
 
 postman for login - http://localhost:3000/api/user/login
 
-day 3 fetch the user
+day3 :  fetch the user like update user, get a user, get all user, delete a user
+
+day 3: auth verication like admin or user only

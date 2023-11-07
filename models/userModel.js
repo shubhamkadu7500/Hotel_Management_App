@@ -28,7 +28,21 @@ var userSchema = new mongoose.Schema({
     role:{
         type:String,
         default:"user",
-    }
+    },
+    isBlocked:{
+        type:Boolean,
+        default:false,
+    },
+    cart:{
+        type: Array,
+        default: [],
+    },
+    address: [{ type:mongoose.Schema.Types.ObjectId, ref:"Address" }],
+
+    wishlists:[{ type:mongoose.Schema.Types.ObjectId, ref: "Product" }],
+
+},{
+    timestamps:true,
 });
 
 //user password incryption function
